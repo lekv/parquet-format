@@ -17,7 +17,16 @@
 # under the License.
 #
 
+.PHONY: doc all
+
+all: thrift doc
+
 thrift:
 	mkdir -p generated
 	thrift --gen cpp -o generated src/main/thrift/parquet.thrift
 	thrift --gen java -o generated src/main/thrift/parquet.thrift
+
+%.html: %.md
+	pandoc -f markdown_github -t html -o $@ $<
+
+doc: PageIndex.html LogicalTypes.html
